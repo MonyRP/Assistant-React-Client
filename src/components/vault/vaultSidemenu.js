@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import { Alert, Button } from "react-bootstrap";
 import axios from "axios";
 
 export default class VaultSidemenu extends Component {
@@ -14,7 +15,8 @@ export default class VaultSidemenu extends Component {
       email: "",
       password: "",
       comment: "",
-      listOfNames: []
+      listOfNames: [],
+      errorMsg: false
     };
 
     this.loadNames = this.loadNames.bind(this);
@@ -48,10 +50,16 @@ export default class VaultSidemenu extends Component {
         password: password,
         comment: comment
       })
-      .then(function(response) {
+      .then(response => {
+        this.setState({
+          errorMsg: false
+        });
         console.log(response);
       })
-      .catch(function(error) {
+      .catch(error => {
+        this.setState({
+          errorMsg: true
+        });
         console.log(error);
       });
   }
@@ -59,6 +67,16 @@ export default class VaultSidemenu extends Component {
   render() {
     return (
       <div>
+        {this.state.errorMsg ? (
+          <Alert
+            variant="danger"
+            onClose={() => this.setState({ errorMsg: false })}
+            dismissible>
+            <Alert.Heading>
+              "Email already used by other account."
+            </Alert.Heading>
+          </Alert>
+        ) : null}
         {/* Enter and Find tabs */}
         <ul className="nav nav-tabs" id="myTab">
           <li className="nav-item">
@@ -97,10 +115,11 @@ export default class VaultSidemenu extends Component {
                   type="text"
                   className="form-control form-control-sm"
                   id="sitename"
+                  placeholder="Gmail"
+                  required
                 />
               </div>
             </div>
-
             <div className="row justify-content-center">
               <div className="form-group col-10">
                 <label htmlFor="username">Username:</label>
@@ -108,10 +127,11 @@ export default class VaultSidemenu extends Component {
                   type="text"
                   className="form-control form-control-sm"
                   id="username"
+                  placeholder="john.doe"
+                  required
                 />
               </div>
             </div>
-
             <div className="row justify-content-center">
               <div className="form-group col-10">
                 <label htmlFor="email">Email</label>
@@ -119,21 +139,23 @@ export default class VaultSidemenu extends Component {
                   type="email"
                   className="form-control form-control-sm"
                   id="email"
+                  placeholder="example.com"
+                  required
                 />
               </div>
             </div>
-
             <div className="row justify-content-center">
               <div className="form-group col-10">
                 <label htmlFor="password">Password</label>
                 <input
-                  type="text"
+                  type="password"
                   className="form-control form-control-sm"
                   id="password"
+                  placeholder="jdoe20"
+                  required
                 />
               </div>
             </div>
-
             <div className="row justify-content-center">
               <div className="form-group col-10">
                 <label htmlFor="comment">Comment</label>
@@ -141,6 +163,8 @@ export default class VaultSidemenu extends Component {
                   className="form-control form-control-sm"
                   id="comment"
                   rows="2"
+                  placeholder="Important notes here."
+                  required
                 />
               </div>
             </div>

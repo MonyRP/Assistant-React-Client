@@ -29,6 +29,7 @@ export default class App extends Component {
                 <i className="fas fa-arrow-right" />
               </a>
 
+              {/* Route for link from sidebar to display account info */}
               <Route
                 path="/vault/:site"
                 render={props => (
